@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ডিপ্লোমা ভর্তি পরীক্ষা প্রস্তুতি</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
+            color: #212529;
+            padding-bottom: 30px;
+        }
+        .app-header {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+        .main-card {
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            background: #ffffff;
+        }
+        .option-btn {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            text-align: left;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            background: #ffffff;
+            font-weight: 500;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+        .option-btn:active:not(:disabled) {
+            transform: scale(0.99);
+        }
+        .opt-key {
+            background: #e9ecef;
+            color: #495057;
+            border-radius: 6px;
+            padding: 2px 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-right: 12px;
+        }
+        .option-btn.correct {
+            background-color: #d1e7dd !important;
+            border-color: #198754 !important;
+            color: #0f5132 !important;
+        }
+        .option-btn.correct .opt-key {
+            background-color: #198754;
+            color: #ffffff;
+        }
+        .option-btn.wrong {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #842029 !important;
+        }
+        .option-btn.wrong .opt-key {
+            background-color: #dc3545;
+            color: #ffffff;
+        }
+        .explanation-box {
+            background-color: #e7f1ff;
+            border-left: 4px solid #0d6efd;
+            padding: 14px;
+            border-radius: 8px;
+            color: #084298;
+        }
+        .tip-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            border-radius: 8px;
+            color: #664d03;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-3" style="max-width: 720px;">
+    <!-- HEADER -->
+    <div class="app-header mb-4 text-center">
+        <h3 class="fw-bold text-primary mb-1">ডিপ্লোমা ভর্তি পরীক্ষা প্রস্তুতি</h3>
+        <p class="text-muted small mb-0">পলিটেকনিক অ্যাডমিশন এমসিকিউ পোর্টাল</p>
+    </div>
+
+    <!-- SETUP SETUP CARD -->
+    <div id="setup-card" class="card main-card p-4">
+        <h5 class="fw-bold mb-3">অনুশীলন শুরু করুন</h5>
+        
+        <div class="row g-3">
+            <div class="col-12">
+                <label class="form-label fw-semibold">মোড নির্বাচন করুন:</label>
+                <select id="mode-select" class="form-select py-2" onchange="toggleModeOptions()">
+                    <option value="learn">Learn Mode (শিখন মোড)</option>
+                    <option value="exam">Exam Mode (পরীক্ষা মোড)</option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label fw-semibold">অধ্যায় নির্বাচন করুন:</label>
+                <select id="filter-select" class="form-select py-2" onchange="toggleChapterSelect()">
+                    <option value="all">সকল অধ্যায় (All 11 Chapters)</option>
+                    <option value="chapter">নির্দিষ্ট অধ্যায় (Specific Chapter)</option>
+                </select>
+            </div>
+
+            <div class="col-12 d-none" id="chapter-dropdown-container">
+                <label class="form-label fw-semibold">অধ্যায় বেছে নিন:</label>
+                <select id="unit-select" class="form-select py-2">
+                    <option value="1">Unit 1: উন্নততর জীবনধারা</option>
+                    <option value="2">Unit 2: জীবনের জন্য পানি</option>
+                    <option value="3">Unit 3: হৃদযন্ত্রের যত কথা এবং অন্যান্য</option>
+                    <option value="4">Unit 4: নবজীবনের সূচনা</option>
+                    <option value="5">Unit 5: দেখতে হলে আলো চাই</option>
+                    <option value="6">Unit 6: পলিমার</option>
+                    <option value="7">Unit 7: অম্ল, ক্ষারক ও লবণের ব্যবহার</option>
+                    <option value="8">Unit 8: আমাদের সম্পদ</option>
+                    <option value="9">Unit 9: দুর্যোগের সাথে বসবাস</option>
+                    <option value="10">Unit 10: এসো বলকে জানি</option>
+                    <option value="11">Unit 11: দৈনন্দিন জীবনে তড়িৎ</option>
+                </select>
+            </div>
+
+            <!-- EXAM MODE OPTIONS -->
+            <div id="exam-configs" class="col-12 d-none">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <label class="form-label fw-semibold">প্রশ্ন সংখ্যা:</label>
+                        <input type="number" id="exam-count" class="form-control" value="20" min="5" max="100">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-semibold">ভুল হলে ব্যাখ্যা:</label>
+                        <select id="show-explain-fail" class="form-select">
+                            <option value="yes">দেখাবে</option>
+                            <option value="no">দেখাবে না</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary w-100 mt-4 py-2 fw-bold fs-5 rounded-3" onclick="startPractice()">শুরু করুন</button>
+    </div>
+
+    <!-- QUIZ CARD -->
+    <div id="quiz-card" class="card main-card p-4 d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <span id="badge-mode" class="badge bg-primary px-3 py-2 rounded-pill">Mode</span>
+            <span id="progress-text" class="fw-bold text-muted">Question 1/20</span>
+        </div>
+
+        <h5 id="question-text" class="fw-bold mb-4" style="line-height: 1.5;">প্রশ্ন লোড হচ্ছে...</h5>
+
+        <div id="options-container" class="mb-3"></div>
+
+        <!-- EXPLANATION -->
+        <div id="explanation-container" class="mt-3 d-none">
+            <div class="explanation-box mb-2">
+                <strong>ব্যাখ্যা:</strong> <span id="explanation-text"></span>
+            </div>
+            <div id="tip-container" class="tip-box mb-2 d-none">
+                <strong>Exam Tip:</strong> <span id="tip-text"></span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+            <button id="next-btn" class="btn btn-primary px-4 py-2 fw-bold rounded-3" onclick="nextQuestion()" disabled>পরবর্তী প্রশ্ন</button>
+        </div>
+    </div>
+
+    <!-- RESULT CARD -->
+    <div id="result-card" class="card main-card p-4 text-center d-none">
+        <h3 class="fw-bold text-success mb-2">পরীক্ষা শেষ!</h3>
+        <h4 id="score-text" class="my-3">আপনার অর্জন: 0 / 0</h4>
+        <button class="btn btn-outline-primary px-4 py-2 fw-bold rounded-3 mt-2" onclick="resetApp()">পুনরায় শুরু করুন</button>
+    </div>
+</div>
+
+<script>
+const CHAPTER_TITLES = {
+    1: "উন্নততর জীবনধারা",
+    2: "জীবনের জন্য পানি",
+    3: "হৃদযন্ত্রের যত কথা এবং অন্যান্য",
+    4: "নবজীবনের সূচনা",
+    5: "দেখতে হলে আলো চাই",
+    6: "পলিমার",
+    7: "অম্ল, ক্ষারক ও লবণের ব্যবহার",
+    8: "আমাদের সম্পদ",
+    9: "দুর্যোগের সাথে বসবাস",
+    10: "এসো বলকে জানি",
+    11: "দৈনন্দিন জীবনে তড়িৎ"
+};
+
+let questions = [];
+let currentIndex = 0;
+let userScore = 0;
+let currentMode = 'learn';
+let showExplainOnFail = 'yes';
+let selectedAnswer = null;
+
+function toggleModeOptions() {
+    const mode = document.getElementById('mode-select').value;
+    document.getElementById('exam-configs').classList.toggle('d-none', mode !== 'exam');
+}
+
+function toggleChapterSelect() {
+    const filter = document.getElementById('filter-select').value;
+    document.getElementById('chapter-dropdown-container').classList.toggle('d-none', filter !== 'chapter');
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+async function fetchUnitJSON(unitNum) {
+    try {
+        const response = await fetch(`./questions/questionU${unitNum}.json`);
+        if (!response.ok) return [];
+        const data = await response.json();
+        
+        // Unwraps array structure [{"questions": [...]}] or direct array [...]
+        if (Array.isArray(data) && data.length > 0 && data[0].questions) {
+            return data[0].questions.map(q => ({ ...q, unit: unitNum }));
+        } else if (Array.isArray(data)) {
+            return data.map(q => ({ ...q, unit: unitNum }));
+        }
+        return [];
+    } catch (e) {
+        return [];
+    }
+}
+
+async function startPractice() {
+    currentMode = document.getElementById('mode-select').value;
+    const filter = document.getElementById('filter-select').value;
+    const selectedUnit = document.getElementById('unit-select').value;
+    const examCount = parseInt(document.getElementById('exam-count').value) || 20;
+    showExplainOnFail = document.getElementById('show-explain-fail').value;
+
+    let loadedQuestions = [];
+
+    if (filter === 'chapter') {
+        loadedQuestions = await fetchUnitJSON(selectedUnit);
+        shuffleArray(loadedQuestions);
+    } else {
+        // Fetch all 11 chapters concurrently
+        const fetchPromises = [];
+        for (let u = 1; u <= 11; u++) {
+            fetchPromises.push(fetchUnitJSON(u));
+        }
+        const results = await Promise.all(fetchPromises);
+        
+        if (currentMode === 'exam') {
+            // Round-robin sampling across all 11 units for balanced selection
+            let unitPools = results.map(res => shuffleArray([...res]));
+            while (loadedQuestions.length < examCount && unitPools.some(p => p.length > 0)) {
+                for (let i = 0; i < unitPools.length; i++) {
+                    if (unitPools[i].length > 0) {
+                        loadedQuestions.push(unitPools[i].pop());
+                    }
+                    if (loadedQuestions.length >= examCount) break;
+                }
+            }
+            shuffleArray(loadedQuestions);
+        } else {
+            loadedQuestions = results.flat();
+            shuffleArray(loadedQuestions);
+        }
+    }
+
+    if (!loadedQuestions || loadedQuestions.length === 0) {
+        alert('কোন প্রশ্ন পাওয়া যায়নি! নিশ্চিত করুন ./questions/ ফোল্ডারে JSON ফাইলগুলো বিদ্যমান।');
+        return;
+    }
+
+    if (currentMode === 'exam' && loadedQuestions.length > examCount) {
+        loadedQuestions = loadedQuestions.slice(0, examCount);
+    }
+
+    questions = loadedQuestions;
+    currentIndex = 0;
+    userScore = 0;
+
+    document.getElementById('setup-card').classList.add('d-none');
+    document.getElementById('quiz-card').classList.remove('d-none');
+    document.getElementById('badge-mode').innerText = currentMode === 'learn' ? 'Learn Mode' : 'Exam Mode';
+
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const q = questions[currentIndex];
+    selectedAnswer = null;
+
+    document.getElementById('progress-text').innerText = `Question ${currentIndex + 1}/${questions.length}`;
+    document.getElementById('question-text').innerText = q.question;
+    
+    const container = document.getElementById('options-container');
+    container.innerHTML = '';
+    
+    document.getElementById('explanation-container').classList.add('d-none');
+    document.getElementById('next-btn').disabled = true;
+
+    for (const [key, value] of Object.entries(q.options)) {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.id = `opt-${key}`;
+        btn.innerHTML = `<span class="opt-key">${key}</span> <span>${value}</span>`;
+        btn.onclick = () => selectOption(key);
+        container.appendChild(btn);
+    }
+}
+
+function selectOption(key) {
+    if (selectedAnswer !== null) return;
+    selectedAnswer = key;
+
+    const q = questions[currentIndex];
+    const correctKey = q.answer;
+    const isCorrect = (key === correctKey);
+
+    if (isCorrect) userScore++;
+
+    const selectedBtn = document.getElementById(`opt-${key}`);
+    const correctBtn = document.getElementById(`opt-${correctKey}`);
+
+    if (isCorrect) {
+        selectedBtn.classList.add('correct');
+    } else {
+        selectedBtn.classList.add('wrong');
+        if (correctBtn) correctBtn.classList.add('correct');
+    }
+
+    let showExplanation = (currentMode === 'learn') || (currentMode === 'exam' && !isCorrect && showExplainOnFail === 'yes');
+
+    if (showExplanation) {
+        document.getElementById('explanation-text').innerText = q.explanation || 'ব্যাখ্যা উপলব্ধ নেই।';
+        if (q.exam_tip) {
+            document.getElementById('tip-text').innerText = q.exam_tip;
+            document.getElementById('tip-container').classList.remove('d-none');
+        } else {
+            document.getElementById('tip-container').classList.add('d-none');
+        }
+        document.getElementById('explanation-container').classList.remove('d-none');
+    }
+
+    document.getElementById('next-btn').disabled = false;
+}
+
+function nextQuestion() {
+    currentIndex++;
+    if (currentIndex < questions.length) {
+        renderQuestion();
+    } else {
+        showResults();
+    }
+}
+
+function showResults() {
+    document.getElementById('quiz-card').classList.add('d-none');
+    document.getElementById('result-card').classList.remove('d-none');
+    document.getElementById('score-text').innerText = `আপনার অর্জন: ${userScore} / ${questions.length}`;
+}
+
+function resetApp() {
+    document.getElementById('result-card').classList.add('d-none');
+    document.getElementById('setup-card').classList.remove('d-none');
+}
+</script>
+</body>
+</html>
